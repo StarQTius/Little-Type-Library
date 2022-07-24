@@ -8,6 +8,7 @@
 #include "fast.h"
 
 #include <array>
+#include <type_traits>
 
 namespace ltl {
 
@@ -34,7 +35,7 @@ constexpr decltype(auto) apply_impl(std::integer_sequence<int, Is...>, F &&f, T 
 
 template <int I, typename T>
 struct tuple_leaf {
-    T value{};
+  T value;
 };
 
 template <int I, typename T>
@@ -142,7 +143,7 @@ struct [[nodiscard]] tuple_t {
 
     /// \cond
     using super = detail::tuple_base_t<indexer_sequence_t, Ts...>;
-    super impl{};
+    super impl;
 
     /// \endcond
 

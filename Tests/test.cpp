@@ -5,6 +5,7 @@
 #include <cstddef>
 #include <functional>
 #include <forward_list>
+#include <type_traits>
 #include <unordered_map>
 
 #include <ltl/algos.h>
@@ -2490,3 +2491,17 @@ TEST(LTL_test, awaiter_expected) {
     ASSERT_EQ(ex::f(true).result(), 5 * 2.5 * 10);
 }
 #endif
+
+TEST(LTL_test, test_tuple_is_default_constructible) {
+  int n = 16;
+
+  ltl::tuple_t tuple{n};
+  ltl::tuple_t ref_tuple{std::ref(n)};
+
+  static_assert(std::is_default_constructible_v<decltype(tuple)>);
+  static_assert(!std::is_default_constructible_v<decltype(ref_tuple)>);
+
+  ASSERT_EQ(tuple[0_n], n);
+  ASSERT_EQ(ref_tuple[0_n], n);
+  ASSERT_EQ(&ref_tuple[0_n], &n);
+}
